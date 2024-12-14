@@ -4,7 +4,7 @@ import { shows } from "./shows";
 
 const routes = Router();
 
-routes.get("/", (req: Request, res: Response) => {
+routes.get("/api", (req: Request, res: Response) => {
   res.send("Welcome to FletNix");
 });
 
