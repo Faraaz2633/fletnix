@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { auth } from "./auth";
 import { shows } from "./shows";
+import { validateToken } from "../middlewares/auth";
 
 const routes = Router();
 
@@ -9,6 +10,6 @@ routes.get("/api", (req: Request, res: Response) => {
 });
 
 routes.use("/api/auth", auth);
-routes.use("/api/shows", shows);
+routes.use("/api/shows", validateToken, shows);
 
 export default routes;

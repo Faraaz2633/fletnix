@@ -29,3 +29,5 @@ export type TUser = {
 };
 
 export type TPayload = string | JwtPayload | null | undefined;
+
+export type TShowType = "TV Show" | "Movie";

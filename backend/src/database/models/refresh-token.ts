@@ -1,13 +1,13 @@
 import { Schema, Types, model } from "mongoose";
 import { jwt } from "../../config";
 
-interface IRefreshToken {
+type TRefreshTokenSchema = {
   refresh_token: string;
   user_id: Types.ObjectId;
   createdAt: Date;
-}
+};
 
-const RefreshTokenSchema = new Schema<IRefreshToken>({
+const RefreshTokenSchema = new Schema<TRefreshTokenSchema>({
   refresh_token: {
     type: String,
     required: true,
@@ -25,7 +25,7 @@ const RefreshTokenSchema = new Schema<IRefreshToken>({
   },
 });
 
-export const RefreshToken = model<IRefreshToken>(
+export const RefreshToken = model<TRefreshTokenSchema>(
   "RefreshToken",
   RefreshTokenSchema
 );
