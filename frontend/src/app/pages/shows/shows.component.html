@@ -1,0 +1,109 @@
+<div class="w-full">
+  <h1 class="text-3xl font-bold text-primary">Shows</h1>
+  <div class="pt-6">
+    <div
+      class="flex items-center justify-between w-full flex-col gap-4 sm:flex-row pb-6"
+    >
+      <label
+        class="input input-bordered flex items-center gap-2 w-full sm:w-auto"
+      >
+        <input
+          type="text"
+          class="grow"
+          placeholder="Search"
+          (input)="onSearch()"
+          [(ngModel)]="searchTerm"
+        />
+        <ng-icon name="heroMagnifyingGlass" class="opacity-70 !h-4 !w-4" />
+      </label>
+      <div class="flex gap-3 items-center w-full sm:w-auto">
+        <button
+          class="btn flex-[1_1_20px] btn-primary min-w-fit"
+          (click)="handleSetCurrentType(tv_show)"
+          [ngClass]="{ 'btn-outline': showType !== tv_show }"
+        >
+          TV Shows
+        </button>
+        <button
+          class="btn flex-[1_1_20px] btn-primary min-w-fit"
+          [ngClass]="{ 'btn-outline': showType !== movie }"
+          (click)="handleSetCurrentType(movie)"
+        >
+          Movies
+        </button>
+      </div>
+    </div>
+    <div
+      class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 pb-6"
+      *ngIf="is_loading"
+    >
+      <div class="skeleton min-h-28"></div>
+      <div class="skeleton min-h-28"></div>
+      <div class="skeleton min-h-28"></div>
+      <div class="skeleton min-h-28"></div>
+      <div class="skeleton min-h-28"></div>
+      <div class="skeleton min-h-28"></div>
+    </div>
+    <div
+      class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 pb-6"
+      *ngIf="showData && showData.length > 0"
+    >
+      <a
+        [routerLink]="['/shows', show.show_id]"
+        class="card bg-secondary-content/20 hover:bg-secondary-content/80 transition-colors w-full shadow-xl border-[0.5px] border-gray-50/20"
+        *ngFor="let show of showData"
+      >
+        <div class="card-body">
+          <h2 class="card-title hover:text-primary transition-colors">
+            {{ show.title }}
+          </h2>
+          <div class="overflow-hidden">
+            <p class="line-clamp-1 overflow-hidden">
+              <span class="font-medium">Cast: </span>
+              {{ show.cast || "-" }}
+            </p>
+          </div>
+          <div class="overflow-hidden">
+            <p class="line-clamp-1">
+              <span class="font-medium">Listed In: </span>
+              {{ show.listed_in || "-" }}
+            </p>
+          </div>
+          <div class="flex items-center justify-between w-full gap-2 flex-wrap">
+            <p class="text-sm">
+              <span class="font-medium">Release Year: </span>
+              <span class="text-gray-500">
+                {{ show.release_year || "-" }}
+              </span>
+            </p>
+            <div class="flex items-center gap-1">
+              <p class="badge badge-primary w-fit flex-grow-0">
+                {{ show.type || "-" }}
+              </p>
+              <p class="badge badge-primary w-fit flex-grow-0">
+                {{ show.rating || "-" }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div
+      *ngIf="!is_loading && showData.length === 0"
+      class="text-center text-xl font-bold"
+    >
+      No data available
+    </div>
+    <div class="flex justify-center">
+      <div class="join">
+        <button class="join-item btn">«</button>
+        <button class="join-item btn">1</button>
+        <button class="join-item btn">2</button>
+        <button class="join-item btn btn-disabled">...</button>
+        <button class="join-item btn">99</button>
+        <button class="join-item btn">100</button>
+        <button class="join-item btn">»</button>
+      </div>
+    </div>
+  </div>
+</div>

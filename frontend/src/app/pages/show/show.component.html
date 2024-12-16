@@ -1,0 +1,45 @@
+<div>
+  <div
+    class="card shadow-md max-w-screen-md w-full mx-auto bg-secondary-content/20 transition-colors hover:bg-secondary-content/70 border-[0.5px] border-gray-100/20"
+  >
+    <div class="card-body space-y-4">
+      <h1 class="text-2xl md:text-5xl font-bold">
+        {{ showData?.title || "-" }}
+      </h1>
+      <h3 class="text-xl">{{ showData?.description || "-" }}</h3>
+      <h4 class="text-xl">
+        <span class="font-medium">Directed by: </span>
+        {{ showData?.director || "-" }}
+      </h4>
+      <h4 class="text-xl">
+        <span class="font-medium">Cast: </span>{{ showData?.cast || "-" }}
+      </h4>
+      <h4 class="text-xl">
+        <span class="font-medium">Listed in: </span>
+        {{ showData?.listed_in || "-" }}
+      </h4>
+      <h4 class="text-xl">
+        <span class="font-medium">Duration: </span>
+        {{ showData?.duration || "-" }}
+      </h4>
+      <h4 class="text-lg">
+        <span class="font-medium">Release Year: </span>
+        {{ showData?.release_year || "-" }}
+      </h4>
+      <div class="flex items-center gap-1">
+        <p class="badge badge-primary w-fit flex-grow-0">
+          {{ showData?.type || "-" }}
+        </p>
+        <p class="badge badge-primary w-fit flex-grow-0">
+          {{ showData?.rating || "-" }}
+        </p>
+        <p
+          class="badge badge-primary w-fit flex-grow-0"
+          *ngIf="!!showData?.country"
+        >
+          {{ showData?.country || "-" }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

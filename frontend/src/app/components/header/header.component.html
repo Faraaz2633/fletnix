@@ -1,0 +1,31 @@
+<div class="fixed w-full top-0 left-0 shadow-lg z-10">
+  <div class="navbar bg-base-100 container sm:px-0">
+    <div class="flex-1">
+      <a class="btn btn-ghost text-2xl sm:-mx-4 lg:mx-0 xl:-mx-4 text-primary"
+        >FletNix</a
+      >
+    </div>
+    <div class="flex gap-4 items-center">
+      <label class="swap swap-rotate">
+        <input type="checkbox" class="theme-controller" value="forest" />
+        <ng-icon name="heroSun" class="swap-off !h-6 !w-6 fill-current" />
+        <ng-icon name="heroMoon" class="swap-on !h-6 !w-6 fill-current" />
+      </label>
+      <div class="dropdown dropdown-end" *ngIf="isLoggedIn">
+        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+          <div class="w-8 rounded-full">
+            <img alt="User" src="https://picsum.photos/200" />
+          </div>
+        </div>
+        <ul
+          tabindex="0"
+          class="menu menu-sm dropdown-content bg-secondary-content rounded-box z-[1] mt-3 w-52 p-2 shadow-lg"
+        >
+          <li>
+            <button (click)="handleLogout()">Logout</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
