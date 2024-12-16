@@ -11,10 +11,19 @@ import { heroMagnifyingGlass } from '@ng-icons/heroicons/outline';
 import { TShow, TShowType } from '../../../utils/types';
 import { ShowsService } from '../../services/shows.service';
 import { ToastrService } from 'ngx-toastr';
+import { PaginationComponent } from '../../components/pagination/pagination.component';
 
 @Component({
   selector: 'app-shows',
-  imports: [NgIcon, RouterLink, NgForOf, NgClass, FormsModule, NgIf],
+  imports: [
+    NgIcon,
+    RouterLink,
+    NgForOf,
+    NgClass,
+    FormsModule,
+    NgIf,
+    PaginationComponent,
+  ],
   templateUrl: './shows.component.html',
   viewProviders: [provideIcons({ heroMagnifyingGlass })],
 })
@@ -32,11 +41,11 @@ export class ShowsComponent {
   searchTerm: string = '';
   page: number = 1;
   per_page: number = 15;
-  total_pages: number = 0;
+  total_pages: number = 1;
   is_loading: boolean = false;
 
   ngOnInit(): void {
-    this.getShows();
+    this.getShows({});
     this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
       this.handleSearch();
     });
@@ -46,13 +55,13 @@ export class ShowsComponent {
     this.searchSubject.complete();
   }
 
-  getShows(): void {
+  getShows({ page }: { page?: number }): void {
     this.is_loading = true;
     this.showsService
       .getAllShows({
         type: this.showType,
         search: this.searchTerm,
-        page: this.page,
+        page: page || 1,
         per_page: this.per_page,
       })
       .subscribe({
@@ -71,15 +80,19 @@ export class ShowsComponent {
 
   handleSetCurrentType(currentType: TShowType) {
     this.showType = this.showType === currentType ? undefined : currentType;
-    this.getShows();
+    this.getShows({});
   }
 
   handleSearch() {
     this.page = 1;
-    this.getShows();
+    this.getShows({});
   }
 
   onSearch() {
     this.searchSubject.next(this.searchTerm);
+  }
+
+  handlePageChange(page: number) {
+    this.getShows({ page });
   }
 }

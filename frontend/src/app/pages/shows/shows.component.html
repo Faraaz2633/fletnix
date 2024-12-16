@@ -95,15 +95,11 @@
       No data available
     </div>
     <div class="flex justify-center">
-      <div class="join">
-        <button class="join-item btn">«</button>
-        <button class="join-item btn">1</button>
-        <button class="join-item btn">2</button>
-        <button class="join-item btn btn-disabled">...</button>
-        <button class="join-item btn">99</button>
-        <button class="join-item btn">100</button>
-        <button class="join-item btn">»</button>
-      </div>
+      <app-pagination
+        [currentPage]="page"
+        [totalPages]="total_pages"
+        (pageChanged)="handlePageChange($event)"
+      ></app-pagination>
     </div>
   </div>
 </div>

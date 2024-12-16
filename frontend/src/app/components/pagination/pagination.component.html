@@ -1,0 +1,38 @@
+<div class="join">
+  <button
+    class="join-item btn"
+    (click)="goToPage(1)"
+    [disabled]="currentPage === 1"
+  >
+    «
+  </button>
+  <button
+    class="join-item btn"
+    (click)="previousPage()"
+    [disabled]="currentPage === 1"
+  >
+    ‹
+  </button>
+  <button
+    class="join-item btn"
+    *ngFor="let page of getPageNumbers()"
+    [class.btn-primary]="currentPage === page"
+    (click)="goToPage(page)"
+  >
+    {{ page }}
+  </button>
+  <button
+    class="join-item btn"
+    (click)="nextPage()"
+    [disabled]="currentPage === totalPages"
+  >
+    ›
+  </button>
+  <button
+    class="join-item btn"
+    [disabled]="currentPage === totalPages"
+    (click)="goToPage(totalPages)"
+  >
+    »
+  </button>
+</div>
