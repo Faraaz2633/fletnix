@@ -27,7 +27,7 @@ const UserSchema = new Schema<TUserSchema>(
     name: {
       type: String,
       required: true,
-      tirm: true,
+      trim: true,
     },
   },
   {

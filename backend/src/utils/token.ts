@@ -10,7 +10,11 @@ type TGetTokenInfoArgs = {
   token_type?: "access" | "refresh";
 };
 
-export const getTokenInfo = ({ req, token, token_type }: TGetTokenInfoArgs) => {
+export const getTokenInfo = ({
+  req,
+  token,
+  token_type,
+}: TGetTokenInfoArgs = {}) => {
   if (!req && !token) {
     return console.error("Provide Request or Token");
   }

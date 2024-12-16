@@ -41,7 +41,10 @@ export const getAllShows = async (
 
     const [total, shows] = await Promise.all([
       Show.countDocuments(query),
-      Show.find(query).skip(startIndex).limit(per_page),
+      Show.find(query)
+        .select("title type rating cast listed_in release_year show_id")
+        .skip(startIndex)
+        .limit(per_page),
     ]);
 
     const total_pages = Math.ceil(total / per_page);

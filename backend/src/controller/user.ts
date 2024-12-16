@@ -95,8 +95,8 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 };
 
 export const refresh = async (req: Request, res: Response) => {
-  const current_user = req.body.user;
-  const user_id = JSON.parse(current_user)._id;
+  const current_user = req?.body?.user;
+  const user_id = current_user ? JSON.parse(current_user)?._id : null;
 
   try {
     const refresh_token_doc = await RefreshToken.findOne({ user_id: user_id });
@@ -129,9 +129,9 @@ export const refresh = async (req: Request, res: Response) => {
 };
 
 export const validate = async (req: Request, res: Response): Promise<void> => {
-  const token = req.body.access_token;
+  const token = req?.body?.access_token;
 
-  const is_valid_token = getTokenInfo(token)?.is_valid_token;
+  const is_valid_token = token ? getTokenInfo({ token })?.is_valid_token : null;
 
   if (is_valid_token) {
     res.status(200).json({
