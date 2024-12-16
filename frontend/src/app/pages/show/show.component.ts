@@ -30,6 +30,7 @@ export class ShowComponent {
       this.toastr.error('Please provide a show id!');
       return;
     }
+    this.is_loading = true;
 
     this.showService.getSingleShow(showId).subscribe({
       next: (data) => {

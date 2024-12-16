@@ -46,7 +46,7 @@
     </div>
     <div
       class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 pb-6"
-      *ngIf="showData && showData.length > 0"
+      *ngIf="showData && showData.length > 0 && !is_loading"
     >
       <a
         [routerLink]="['/shows', show.show_id]"
