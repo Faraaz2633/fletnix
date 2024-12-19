@@ -3,6 +3,7 @@ import { Show, ShowSchemaType } from "../database/models/show";
 import { DEFAULT_PAGE, DEFAULT_PER_PAGE } from "../utils/constants";
 import { getTokenInfo } from "../utils/token";
 import { TShowType } from "../types";
+import { PipelineStage } from "mongoose";
 
 export const getAllShows = async (
   req: Request,
@@ -22,32 +23,81 @@ export const getAllShows = async (
 
     const age = getTokenInfo({ req })?.user?.age;
 
-    const query: ShowSchemaType = {};
-
-    if (age && age < 18) {
-      query.rating = { $ne: "R" };
-    }
-
-    if (showType && (showType === "TV Show" || showType === "Movie")) {
-      query.type = showType;
-    }
-
-    if (searchTerm) {
-      query.$or = [
-        { title: { $regex: searchTerm, $options: "i" } },
-        { cast: { $regex: searchTerm, $options: "i" } },
-      ];
-    }
+    const aggregationQuery: PipelineStage[] = [
+      {
+        $match: {
+          date_added: {
+            $ne: "",
+          },
+          $or: [
+            { title: { $regex: searchTerm.trim(), $options: "i" } },
+            { cast: { $regex: searchTerm.trim(), $options: "i" } },
+          ],
+          ...(showType && (showType === "TV Show" || showType === "Movie")
+            ? {
+                type: showType,
+              }
+            : {}),
+          ...(age && age < 18
+            ? {
+                rating: {
+                  $ne: "R",
+                },
+              }
+            : {}),
+        },
+      },
+      {
+        $addFields: {
+          date_added_parsed: {
+            $dateFromString: {
+              dateString: {
+                $trim: {
+                  input: "$date_added",
+                },
+              },
+              format: "%B %d, %Y",
+            },
+          },
+        },
+      },
+      {
+        $sort: {
+          date_added_parsed: 1,
+        },
+      },
+    ];
 
     const [total, shows] = await Promise.all([
-      Show.countDocuments(query),
-      Show.find(query)
-        .select("title type rating cast listed_in release_year show_id")
-        .skip(startIndex)
-        .limit(per_page),
+      Show.aggregate([
+        ...aggregationQuery,
+        {
+          $count: "total",
+        },
+      ]),
+      Show.aggregate([
+        ...aggregationQuery,
+        {
+          $skip: startIndex,
+        },
+        {
+          $limit: per_page,
+        },
+        {
+          $project: {
+            date_added_parsed: 0,
+            description: 0,
+            director: 0,
+            country: 0,
+            duration: 0,
+          },
+        },
+      ]),
     ]);
 
-    const total_pages = Math.ceil(total / per_page);
+    const document_count = total?.[0]?.total || 0;
+
+    const total_pages = Math.ceil(document_count / per_page);
 
     if (page > total_pages) {
       return res.status(400).json({
